@@ -28,14 +28,30 @@ export default async function CompleteTheLook() {
     fetchSection("offer_banner"),
   ]);
 
-  const lookProducts: any[] = lookSection?.products?.filter((p: any) => p.isActive) ?? [];
+  let lookProducts: any[] = lookSection?.products?.filter((p: any) => p.isActive) ?? [];
+
+  // Fallback: if no specific products are curated in Complete the Look yet, show latest store products
+  if (lookProducts.length === 0) {
+    try {
+      const res = await fetch(`${BASE_URL}/products?limit=8`, { next: { revalidate: 60 } });
+      if (res.ok) {
+        const data = await res.json();
+        lookProducts = data.products?.filter((p: any) => p.isActive) ?? [];
+      }
+    } catch {}
+  }
+
+  const hasProducts = lookProducts.length > 0;
+  const hasBanner = Boolean(bannerSection?.isActive);
+
+  if (!hasProducts && !hasBanner) return null;
 
   return (
     <section className="w-full bg-white py-16 px-4 sm:px-6 lg:px-8 border-b border-[#ebdcd0] relative overflow-hidden">
       <div className="max-w-[1440px] mx-auto">
 
-        {/* Complete the Look Section */}
-        {lookProducts.length > 0 && (
+        {/* Complete the Look Section with Side Banner */}
+        {hasProducts ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 items-start">
             <div className="lg:col-span-2 flex flex-col justify-between">
               {/* Header: Luxury title with gold stylist badge and elegant gradient line */}
@@ -155,12 +171,72 @@ export default async function CompleteTheLook() {
                       <span>Shop Accessories</span>
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </span>
-                  </div>
-                </Link>
-              )}
+                    </div>
+                  </Link>
+                )}
+              </div>
             </div>
+          ) : hasBanner ? (
+          <div className="mb-12">
+            <Link
+              href={bannerSection?.linkHref || "/shop"}
+              className="relative rounded-2xl overflow-hidden min-h-[220px] sm:min-h-[260px] group flex flex-col justify-center shadow-md hover:shadow-xl transition-all duration-500 border border-gray-100 block"
+              style={{ background: bannerSection?.bgColor || "#5c1a52" }}
+            >
+              {bannerSection?.image && (
+                <Image
+                  src={bannerSection.image}
+                  alt={bannerSection.heading || "Special Offer"}
+                  fill
+                  sizes="100vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-25"
+                />
+              )}
+              <div className="relative z-10 flex flex-col justify-center px-8 py-8 sm:px-12 text-white">
+                {bannerSection?.badgeText && (
+                  <span
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase px-3.5 py-1 rounded-full mb-2 w-fit"
+                    style={{
+                      background: "rgba(255,255,255,0.2)",
+                      color: bannerSection?.textColor || "#fff",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                    }}
+                  >
+                    <Award size={13} />
+                    {bannerSection.badgeText}
+                  </span>
+                )}
+                {bannerSection?.heading && (
+                  <h3
+                    className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 tracking-tight"
+                    style={{ color: bannerSection?.textColor || "#fff" }}
+                  >
+                    {bannerSection.heading}
+                  </h3>
+                )}
+                {bannerSection?.subheading && (
+                  <p
+                    className="text-sm sm:text-base mb-4 font-normal max-w-xl"
+                    style={{ color: bannerSection?.textColor || "#fff", opacity: 0.9 }}
+                  >
+                    {bannerSection.subheading}
+                  </p>
+                )}
+                <span
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase w-fit"
+                  style={{
+                    background: "rgba(255,255,255,0.25)",
+                    color: bannerSection?.textColor || "#fff",
+                    border: "1px solid rgba(255,255,255,0.45)",
+                  }}
+                >
+                  <span>{bannerSection?.linkText || "Shop Now"}</span>
+                  <ArrowRight size={14} />
+                </span>
+              </div>
+            </Link>
           </div>
-        )}
+        ) : null}
 
         {/* Bottom Utility Row: Shipping progress, interactive coupon card & WhatsApp stylist */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
