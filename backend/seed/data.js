@@ -1,0 +1,107 @@
+// Edit image paths, prices, and admin credentials to match your actual data
+// before running the seeder.
+
+const categories = [
+  { name: "Gowns", slug: "gowns", displayOrder: 1, image: "/growns.jpg" },
+  { name: "Traditional", slug: "traditional", displayOrder: 2, image: "/traditional.jpg" },
+  { name: "Indowestern", slug: "indowestern", displayOrder: 3, image: "/indowestern.jpg" },
+  { name: "Tops", slug: "tops", displayOrder: 4, image: "/tops.jpg" },
+  { name: "Cotton Fabrics", slug: "cotton-fabrics", displayOrder: 5, image: "/cotton-fabrics.jpg" },
+  { name: "Plus Size", slug: "plus-size", displayOrder: 6, image: "/plus-size.jpg" },
+  { name: "Kaftans", slug: "kaftans", displayOrder: 7, image: "/kaftans.jpg" },
+  { name: "Jewellery", slug: "jewellery", displayOrder: 8, image: "/jewellery.jpg" },
+  { name: "Trendy", slug: "trendy", displayOrder: 9, image: "/trendy.jpg" },
+  { name: "Festive", slug: "festive", displayOrder: 10, image: "/festive.jpg" },
+];
+
+// categorySlug is used by the seeder to look up the created category's _id
+const products = [
+  {
+    name: "Organza Lacework Saree",
+    slug: "organza-lacework-saree",
+    categorySlug: "traditional",
+    price: 165,
+    discountPrice: 160,
+    material: "Organza",
+    description: "Organza saree with lacework borders and thread work with fabric paint.",
+    images: ["/saree1.jpeg", "/organza.jpeg"],
+    colors: ["Maroon", "Gold"],
+    sizes: ["Free Size"],
+    stock: 25,
+    tags: ["new-arrival"],
+  },
+  {
+    name: "Silk Saree",
+    slug: "silk-saree",
+    categorySlug: "traditional",
+    price: 180,
+    material: "Silk",
+    description: "Premium silk saree with traditional weave.",
+    images: ["/saree1.jpeg"],
+    colors: ["Red", "Green"],
+    sizes: ["Free Size"],
+    stock: 20,
+    tags: ["trending"],
+  },
+  {
+    name: "Tussar Silk",
+    slug: "tussar-silk",
+    categorySlug: "traditional",
+    price: 190,
+    material: "Tussar Silk",
+    description: "Tussar silk saree with rich texture and elegant drape.",
+    images: ["/saree1.jpeg"],
+    colors: ["Beige"],
+    sizes: ["Free Size"],
+    stock: 15,
+    tags: [],
+  },
+  {
+    name: "Organza Tissue",
+    slug: "organza-tissue",
+    categorySlug: "traditional",
+    price: 170,
+    material: "Organza Tissue",
+    description: "Lightweight organza tissue saree with delicate shimmer.",
+    images: ["/organza.jpeg"],
+    colors: ["Pink"],
+    sizes: ["Free Size"],
+    stock: 18,
+    tags: ["festive"],
+  },
+  {
+    name: "Cotton Material Saree",
+    slug: "cotton-material-saree",
+    categorySlug: "cotton-fabrics",
+    price: 120,
+    material: "Cotton",
+    description: "Breathable cotton material saree, ideal for daily wear.",
+    images: ["/saree1.jpeg"],
+    colors: ["Blue", "White"],
+    sizes: ["Free Size"],
+    stock: 30,
+    tags: [],
+  },
+  {
+    name: "Silk Material Saree",
+    slug: "silk-material-saree",
+    categorySlug: "traditional",
+    price: 185,
+    material: "Silk",
+    description: "Elegant silk material saree with a rich finish.",
+    images: ["/saree1.jpeg"],
+    colors: ["Purple"],
+    sizes: ["Free Size"],
+    stock: 12,
+    tags: ["trending"],
+  },
+];
+
+const adminUser = {
+  name: process.env.ADMIN_NAME || "Mulberries Admin",
+  email: process.env.ADMIN_EMAIL,
+  password: process.env.ADMIN_PASSWORD,
+  role: "admin",
+};
+
+module.exports = { categories, products, adminUser };
