@@ -44,6 +44,7 @@ const allowedOrigins = [
   // requests work even if an environment variable was missed during setup.
   "https://demo.mulberries.shop",
   "https://dashboard.mulberries.shop",
+  "https://mulberries-2.vercel.app",
 ].filter(Boolean);
 
 app.use(
@@ -51,6 +52,10 @@ app.use(
     origin: function (origin, callback) {
       // allow non-browser requests (curl, Postman, server-to-server)
       if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      // Automatically permit any Vercel deployment URL
+      if (/^https:\/\/.*\.vercel\.app$/.test(origin)) {
         return callback(null, true);
       }
       // In development, automatically permit any localhost or 127.0.0.1 port
