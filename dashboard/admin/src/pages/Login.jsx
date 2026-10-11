@@ -163,7 +163,7 @@ const Login = () => {
                 boxShadow: "0 4px 15px rgba(92, 26, 82, 0.25)",
               }}
             >
-              Sign In to Atelier Portal
+              Sign In to Admin Portal
             </Button>
           </Form.Item>
         </Form>
